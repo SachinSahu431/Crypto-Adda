@@ -36,11 +36,12 @@ const Carousel = () => {
 
   const fetchTrendingCoins = async () => {
     // fetching data from
+    // data is destructured, else we need to write data.data
     const { data } = await axios.get(TrendingCoins(currency));
     setTrending(data);
   };
 
-  console.log(trending);
+  // console.log(trending);
 
   // fetch trending when rendering first time and when currency changes
   useEffect(() => {
