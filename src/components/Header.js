@@ -15,7 +15,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { CryptoState } from "../Context";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   title: {
     flex: 1,
     color: "gold",
@@ -66,8 +66,8 @@ const Header = () => {
               }}
               onChange={(e) => setCurrency(e.target.value)}
             >
-              <MenuItem value="USD">USD</MenuItem>
-              <MenuItem value="INR">INR</MenuItem>
+              <MenuItem value={"USD"}>USD</MenuItem>
+              <MenuItem value={"INR"}>INR</MenuItem>
             </Select>
           </Toolbar>
         </Container>
