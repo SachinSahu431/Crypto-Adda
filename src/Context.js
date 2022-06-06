@@ -8,8 +8,8 @@ const Context = ({ children }) => {
   const [symbol, setSymbol] = useState("₹");
 
   useEffect(() => {
-    if (currency == "INR") setSymbol("₹");
-    else if (currency == "USD") setSymbol("$");
+    if (currency === "INR") setSymbol("₹");
+    else if (currency === "USD") setSymbol("$");
   }, [currency]);
 
   //   currency is dependency here

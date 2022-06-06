@@ -1,13 +1,17 @@
-import { makeStyles, Typography } from "@material-ui/core";
+import { LinearProgress, makeStyles, Typography } from "@material-ui/core";
 import axios from "axios";
-import React from "react";
+// import React from "react";
 import { useEffect, useState } from "react";
-// import { useState } from "react";
+// 
 import { useParams } from "react-router-dom";
 import CoinInfo from "../components/CoinInfo";
 import { SingleCoin } from "../config/api";
 import { CryptoState } from "../Context";
-import ReactHtmlParser from "react-html-parser";
+import { numberWithCommas } from "../components/Banner/Carousel";
+// import ReactHtmlParser from "react-html-parser";
+import parse from "html-react-parser";
+
+
 const CoinPage = () => {
   const { id } = useParams();
   const [coin, setCoin] = useState();
@@ -20,15 +24,17 @@ const CoinPage = () => {
     setCoin(data);
   };
 
-  console.log(coin);
+  // console.log(coin);
 
   useEffect(() => {
     fetchCoin();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const useState = makeStyles((theme) => ({
+  const useStyles = makeStyles((theme) => ({
     container: {
       display: "flex",
+      // if screen is less than medium screen
       [theme.breakpoints.down("md")]: {
         flexDirection: "column",
         alignItems: "center",
@@ -50,9 +56,37 @@ const CoinPage = () => {
       marginBottom: 20,
       fontFamily: "Montserrat",
     },
+    description: {
+      width: "100%",
+      fontFamily: "Montserrat",
+      padding: 25,
+      paddingBottom: 15,
+      paddingTop: 0,
+      textAlign: "justify",
+    },
+    marketData: {
+      alignSelf: "start",
+      padding: 25,
+      paddingTop: 10,
+      width: "100%",
+      // keeping it responsive
+      [theme.breakpoints.down("md")]: {
+        display: "flex",
+        justifyContent: "space-around",
+      },
+      [theme.breakpoints.down("sm")]: {
+        flexDirection: "column",
+        alignItems: "center",
+      },
+      [theme.breakpoints.down("xs")]: {
+        alignItems: "start",
+      },
+    },
   }));
 
-  const classes = useState();
+  const classes = useStyles();
+
+  if (!coin) return <LinearProgress style={{ backgroundColor: "gold" }} />;
 
   return (
     <div className={classes.container}>
@@ -68,8 +102,64 @@ const CoinPage = () => {
         </Typography>
         {/* use react-html-parser to handle html parsing in description text */}
         <Typography variant="subtitle1" className={classes.description}>
-          {ReactHtmlParser(coin?.description.en.split(". ")[0])}.
-        </Typography>{" "}
+          {parse(coin?.description.en.split(". ")[0])}.
+          {/* {ReactHtmlParser(coin?.description.en.split(". ")[0])}. */}
+        </Typography>
+        <div className={classes.marketData}>
+          <span style={{ display: "flex" }}>
+            <Typography variant="h5" className={classes.heading}>
+              Rank:
+            </Typography>
+            &nbsp; &nbsp;
+            <Typography
+              variant="h5"
+              style={{
+                fontFamily: "Montserrat",
+              }}
+            >
+              {numberWithCommas(coin?.market_cap_rank)}
+            </Typography>
+          </span>
+
+          <span style={{ display: "flex" }}>
+            <Typography variant="h5" className={classes.heading}>
+              Current Price:
+            </Typography>
+            &nbsp; &nbsp;
+            <Typography
+              variant="h5"
+              style={{
+                fontFamily: "Montserrat",
+              }}
+            >
+              {symbol}{" "}
+              {numberWithCommas(
+                coin?.market_data.current_price[currency.toLowerCase()]
+              )}
+            </Typography>
+          </span>
+
+          <span style={{ display: "flex" }}>
+            <Typography variant="h5" className={classes.heading}>
+              Market Cap:
+            </Typography>
+            &nbsp; &nbsp;
+            <Typography
+              variant="h5"
+              style={{
+                fontFamily: "Montserrat",
+              }}
+            >
+              {symbol}{" "}
+              {numberWithCommas(
+                coin?.market_data.market_cap[currency.toLowerCase()]
+                  .toString()
+                  .slice(0, -6)
+              )}
+              M
+            </Typography>
+          </span>
+        </div>
       </div>
       {/* chart */}
       <CoinInfo coin={coin} />

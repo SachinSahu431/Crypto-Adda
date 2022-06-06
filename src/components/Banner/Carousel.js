@@ -46,6 +46,7 @@ const Carousel = () => {
   // fetch trending when rendering first time and when currency changes
   useEffect(() => {
     fetchTrendingCoins();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currency]);
 
   const items = trending.map((coin) => {

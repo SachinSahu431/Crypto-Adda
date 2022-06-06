@@ -43,6 +43,7 @@ const CoinsTable = () => {
   // everyt currency changes, call fetchCoins
   useEffect(() => {
     fetchCoins();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currency]);
 
   const darkTheme = createTheme({
@@ -113,7 +114,7 @@ const CoinsTable = () => {
                       }}
                       key={head}
                       //   give more space to column of coin name
-                      align={head === "Coin" ? "" : "right"}
+                      align={head === "Coin" ? "inherit" : "right"}
                     >
                       {head}
                     </TableCell>
@@ -192,6 +193,7 @@ const CoinsTable = () => {
           )}
         </TableContainer>
         <Pagination
+          count={parseInt((handleSearch()?.length / 10).toFixed(0))}
           style={{
             padding: 20,
             width: "100%",
@@ -200,7 +202,6 @@ const CoinsTable = () => {
           }}
           classes={{ ul: classes.pagination }}
           //   ul gives classes
-          count={(handleSearch()?.length / 10).toFixed(0)}
           onChange={(_, value) => {
             setPage(value);
             window.scroll(0, 450);
