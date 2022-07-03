@@ -9,6 +9,8 @@ import {
   Typography,
   createTheme,
   ThemeProvider,
+  InputLabel,
+  FormControl,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import React from "react";
@@ -25,24 +27,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = () => {
+const darkTheme = createTheme({
+  palette: {
+    primary: {
+      main: "#fff",
+    },
+    type: "dark",
+  },
+});
+
+function Header() {
   const classes = useStyles();
 
-  const { currency, setCurrency } = CryptoState();
+  const { currency, setCurrency } = CryptoState("INR");
 
   console.log(currency);
 
   // to navigate between pages
   const history = useHistory();
-
-  const darkTheme = createTheme({
-    palette: {
-      primary: {
-        main: "#fff",
-      },
-      type: "dark",
-    },
-  });
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -54,26 +56,30 @@ const Header = () => {
               className={classes.title}
               variant="h6"
             >
-              Cheems Hub
+              Crypto Adda
             </Typography>
-
-            <Select
-              variant="outlined"
-              style={{
-                width: 100,
-                height: 40,
-                marginRight: 15,
-              }}
-              onChange={(e) => setCurrency(e.target.value)}
-            >
-              <MenuItem value={"USD"}>USD</MenuItem>
-              <MenuItem value={"INR"}>INR</MenuItem>
-            </Select>
+            <FormControl>
+              <InputLabel id="input_label">Currency</InputLabel>
+              <Select
+                variant="outlined"
+                labelId="input_label"
+                style={{
+                  width: 120,
+                  height: 40,
+                  marginRight: 15,
+                }}
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value)}
+              >
+                <MenuItem value={"USD"}>USD</MenuItem>
+                <MenuItem value={"INR"}>INR</MenuItem>
+              </Select>
+            </FormControl>
           </Toolbar>
         </Container>
       </AppBar>
     </ThemeProvider>
   );
-};
+}
 
 export default Header;

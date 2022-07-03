@@ -2,10 +2,15 @@ import { Container, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import Carousel from "./Carousel";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   banner: {
     // backgroudImage: "url(./banner.jpg)",
     backgroundImage: `url(${process.env.PUBLIC_URL + "/banner.jpg"})`,
+  },
+  carousel: {
+    height: "50%",
+    display: "flex",
+    alignItems: "center",
   },
   bannerContent: {
     height: 400,
@@ -13,6 +18,13 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     paddingTop: 25,
     justifyContent: "space-around",
+  },
+  tagline: {
+    display: "flex",
+    flexDirection: "column",
+    textAlign: "center",
+    height: "40%",
+    justifyContent: "center",
   },
 }));
 
@@ -31,7 +43,7 @@ const Banner = () => {
               fontFamily: "Montserrat",
             }}
           >
-            Cheems Hub
+            Crypto Adda
           </Typography>
           <Typography
             variant="subtitle2"
@@ -41,7 +53,7 @@ const Banner = () => {
               fontFamily: "Montserrat",
             }}
           >
-            A one-stop destination for all Cryptography related info!
+            A One-Stop Destination For All Crypto Currency Related Information!
           </Typography>
         </div>
         <Carousel />

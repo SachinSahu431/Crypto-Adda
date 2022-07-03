@@ -89,7 +89,7 @@ const CoinsTable = () => {
           variation="h4"
           style={{ margin: 18, fontfamily: "Montserrat" }}
         >
-          Cryptocurrency prices by Market Cap
+          Latest Crypto Currencies and their Performance
         </Typography>
         <TextField
           label="Search For a Crypto Currency.."
@@ -105,20 +105,22 @@ const CoinsTable = () => {
             <Table>
               <TableHead style={{ backgroundColor: "#EEBC1D" }}>
                 <TableRow>
-                  {["Coin", "Price", "24h Change", "Market Cap"].map((head) => (
-                    <TableCell
-                      style={{
-                        color: "black",
-                        fontWeight: "700",
-                        fontFamily: "Montserrat",
-                      }}
-                      key={head}
-                      //   give more space to column of coin name
-                      align={head === "Coin" ? "inherit" : "right"}
-                    >
-                      {head}
-                    </TableCell>
-                  ))}
+                  {["Coin", "Latest Price", "24h Change", "Market Cap"].map(
+                    (head) => (
+                      <TableCell
+                        style={{
+                          color: "black",
+                          fontWeight: "700",
+                          fontFamily: "Montserrat",
+                        }}
+                        key={head}
+                        //   give more space to column of coin name
+                        align={head === "Coin" ? "inherit" : "right"}
+                      >
+                        {head}
+                      </TableCell>
+                    )
+                  )}
                 </TableRow>
               </TableHead>
               <TableBody>
