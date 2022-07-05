@@ -16,6 +16,7 @@ import { makeStyles } from "@material-ui/styles";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { CryptoState } from "../Context";
+import AuthModal from "./Authentication/AuthModal";
 
 const useStyles = makeStyles((theme) => ({
   title: {
@@ -75,6 +76,7 @@ function Header() {
                 <MenuItem value={"INR"}>INR</MenuItem>
               </Select>
             </FormControl>
+            <AuthModal />
           </Toolbar>
         </Container>
       </AppBar>
