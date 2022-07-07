@@ -1,6 +1,8 @@
 import axios from "axios";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { CoinList } from "./config/api";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
 
 // name of the state
 const crypto = createContext();
@@ -14,6 +16,17 @@ const Context = ({ children }) => {
     message: "",
     type: "success",
   });
+
+  useEffect(() => {
+    onAuthStateChanged(
+      auth,
+      (user) => {
+        if (user) setUser(user);
+        else setUser(null);
+      },
+      []
+    );
+  }, []);
 
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
