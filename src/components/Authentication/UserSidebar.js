@@ -52,13 +52,12 @@ const useStyles = makeStyles({
 });
 
 export default function UserSidebar() {
-  const { user, setAlert } = CryptoState();
-
   const classes = useStyles();
 
   const [state, setState] = React.useState({
     right: false,
   });
+  const { user, setAlert } = CryptoState();
 
   const toggleDrawer = (anchor, open) => (event) => {
     if (
@@ -81,7 +80,7 @@ export default function UserSidebar() {
 
     toggleDrawer();
   };
-
+  //   console.log(user);
   return (
     <div>
       {["right"].map((anchor) => (
@@ -110,7 +109,17 @@ export default function UserSidebar() {
                   src={user.photoURL}
                   alt={user.displayName || user.email}
                 />
-                {user.displayName || user.email}
+                <span
+                  style={{
+                    width: "100%",
+                    fontSize: 25,
+                    textAlign: "center",
+                    fontWeight: "bolder",
+                    wordWrap: "break-word",
+                  }}
+                >
+                  {user.displayName || user.email}
+                </span>
                 <div className={classes.watchlist}>
                   <span style={{ fontSize: 15, textShadow: "0 0 5px black" }}>
                     Watchlist
