@@ -1,8 +1,13 @@
-import { LinearProgress, makeStyles, Typography } from "@material-ui/core";
+import {
+  LinearProgress,
+  makeStyles,
+  Button,
+  Typography,
+} from "@material-ui/core";
 import axios from "axios";
 // import React from "react";
 import { useEffect, useState } from "react";
-// 
+//
 import { useParams } from "react-router-dom";
 import CoinInfo from "../components/CoinInfo";
 import { SingleCoin } from "../config/api";
@@ -10,13 +15,14 @@ import { CryptoState } from "../Context";
 import { numberWithCommas } from "../components/Banner/Carousel";
 // import ReactHtmlParser from "react-html-parser";
 import parse from "html-react-parser";
-
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../firebase";
 
 const CoinPage = () => {
   const { id } = useParams();
   const [coin, setCoin] = useState();
 
-  const { currency, symbol } = CryptoState();
+  const { currency, symbol, user, watchlist, setAlert } = CryptoState();
 
   const fetchCoin = async () => {
     const { data } = await axios.get(SingleCoin(id));
@@ -30,6 +36,9 @@ const CoinPage = () => {
     fetchCoin();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // keep a track whether the coin is already favourite
+  const alreadyFavorited = watchlist.includes(coin?.id);
 
   const useStyles = makeStyles((theme) => ({
     container: {
@@ -70,11 +79,12 @@ const CoinPage = () => {
       paddingTop: 10,
       width: "100%",
       // keeping it responsive
+      [theme.breakpoints.down("sm")]: {
+        flexDirection: "column",
+        alignItems: "center",
+      },
       [theme.breakpoints.down("md")]: {
         display: "flex",
-        justifyContent: "space-around",
-      },
-      [theme.breakpoints.down("sm")]: {
         flexDirection: "column",
         alignItems: "center",
       },
@@ -83,6 +93,58 @@ const CoinPage = () => {
       },
     },
   }));
+
+  // add a coin to favourite list and update in firestore
+  const addToFavorites = async () => {
+    const coinRef = doc(db, "watchlist", user.uid);
+
+    try {
+      // update the existing coin list in firestore
+      await setDoc(coinRef, {
+        coins: watchlist ? [...watchlist, coin?.id] : [coin?.id],
+      });
+
+      setAlert({
+        opened: true,
+        message: `${coin?.name} Added to Favorites!`,
+        type: "success",
+      });
+    } catch (error) {
+      setAlert({
+        opened: true,
+        message: error.message,
+        type: "error",
+      });
+    }
+  };
+
+  // similar to addToFavorites, use complete list, but don't add the coin which we selected
+  const removeFromFavorites = async () => {
+    const coinRef = doc(db, "watchlist", user.uid);
+
+    try {
+      // update the existing coin list in firestore
+      await setDoc(
+        coinRef,
+        {
+          coins: watchlist.filter((fav) => fav !== coin?.id),
+        },
+        { merge: "true" }
+      );
+
+      setAlert({
+        opened: true,
+        message: `${coin?.name} Removed from Favorites!`,
+        type: "success",
+      });
+    } catch (error) {
+      setAlert({
+        opened: true,
+        message: error.message,
+        type: "error",
+      });
+    }
+  };
 
   const classes = useStyles();
 
@@ -159,6 +221,19 @@ const CoinPage = () => {
               M
             </Typography>
           </span>
+          {user && (
+            <Button
+              variant="outlined"
+              style={{
+                width: "100%",
+                height: 40,
+                backgroundColor: alreadyFavorited ? "#ff0000" : "#EEBC1D",
+              }}
+              onClick={alreadyFavorited ? removeFromFavorites : addToFavorites}
+            >
+              {alreadyFavorited ? "Remove From Favourites" : "Add To Favorites"}
+            </Button>
+          )}
         </div>
       </div>
       {/* chart */}

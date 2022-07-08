@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { CoinList } from "./config/api";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth, db } from "./firebase";
+import { doc, onSnapshot } from "firebase/firestore";
 
 // name of the state
 const crypto = createContext();
@@ -31,6 +32,30 @@ const Context = ({ children }) => {
   const [coins, setCoins] = useState([]);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
+  const [watchlist, setWatchlist] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      const coinRef = doc(db, "watchlist", user.uid);
+
+      // check whether database is updated or not
+      // update the favourite list
+      // unsubscribe after creating one snapshot
+      // snapshot enables realtime updation of database
+      var unsubscribe = onSnapshot(coinRef, (coin) => {
+        if (coin.exists()) {
+          console.log(coin.data());
+          setWatchlist(coin.data().coins);
+        } else {
+          console.log("Nothing in favourite list");
+        }
+      });
+
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [user]);
 
   useEffect(() => {
     if (currency === "INR") setSymbol("₹");
@@ -60,6 +85,7 @@ const Context = ({ children }) => {
         coins,
         loading,
         fetchCoins,
+        watchlist,
       }}
     >
       {children}
