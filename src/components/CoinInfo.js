@@ -68,6 +68,7 @@ const CoinInfo = ({ coin }) => {
       display: "flex",
       flexDirection: "column",
       alignItems: "center",
+      justifyContent: "center",
       marginTop: 25,
       padding: 40,
       [theme.breakpoints.down("md")]: {

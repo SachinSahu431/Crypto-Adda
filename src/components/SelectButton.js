@@ -7,8 +7,8 @@ const SelectButton = ({ children, selected, onClick }) => {
       border: "1px solid gold",
       borderRadius: 5,
       padding: 10,
-      paddingLeft: 20,
-      paddingRight: 20,
+      // paddingLeft: 20,
+      // paddingRight: 20,
       fontFamily: "Montserrat",
       "&:hover": {
         backgroundColor: "gold",
@@ -19,6 +19,7 @@ const SelectButton = ({ children, selected, onClick }) => {
       color: selected ? "black" : "",
       fontWeight: selected ? 700 : 500,
       width: "22%",
+      textAlign: "center",
     },
   });
 
