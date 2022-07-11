@@ -74,7 +74,11 @@ const CoinsTable = () => {
       <Container style={{ textAlign: "center" }}>
         <Typography
           variation="h4"
-          style={{ margin: 18, fontfamily: "Montserrat" }}
+          style={{
+            margin: 18,
+            fontfamily: "Montserrat",
+            textTransform: "capitalize",
+          }}
         >
           Latest Crypto Currencies and their Performance
         </Typography>

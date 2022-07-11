@@ -53,7 +53,7 @@ const Banner = () => {
               fontFamily: "Montserrat",
             }}
           >
-            A One-Stop Destination For All Crypto Currency Related Information!
+            The One-Stop-Destination For All Crypto Currency Information!
           </Typography>
         </div>
         <Carousel />
